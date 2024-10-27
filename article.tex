@@ -1,0 +1,116 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[slovak]{babel}
+%\usepackage[T1]{fontenc}
+\usepackage[IL2]{fontenc} % lepšia sadzba písmena Ľ než v T1
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{url} % príkaz \url na formátovanie URL
+\usepackage{hyperref} % odkazy v texte budú aktívne (pri niektorých triedach dokumentov spôsobuje posun textu)
+
+\usepackage{cite}
+%\usepackage{times}
+
+\pagestyle{headings}
+
+\title{Collaborative Recommendation Systems\thanks{Semester project in Engineering Methods year 2024/2025, teacher: Pavol Batalik}} % meno a priezvisko vyučujúceho na cvičeniach
+
+\author{Andrii Malokhatko\\[2pt]
+	{\small Slovak Technical University, Bratislava}\\
+	{\small Faculty of Informatics and Information Technologies}\\
+	{\small \texttt{xmalokhatko@stuba.sk}}
+	}
+
+\date{\small 30th of September 2024} % upravte
+
+% Define the C column type for centered columns with specified width
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+Collaborative Recommendation Systems have played an important role in various industries proving to be an efficient tool to accurately recommend relevant information and enhance user experience using similarities in users behavior. Besides that, such systems have had a profound influence on the industry of recommendation systems and data filtering, particularly in sectors like social media, streaming services,  e-commerce and many others, where personalized suggestions are crucial for user engagement. That's why in this article, I aim to address the following questions:
+\begin{enumerate}
+\item What are Collaborative Recommendation Systems are?
+\item Types of Collaborative Filtering: such as user-based, item-based, and hybrid methods.
+\item Underlying structures and core algorithms behind Collaborative Recommendation Systems, including matrix factorization and deep learning approaches.
+\item Real-world use cases ranging from product recommendation in e-commerce to content suggestions on social media and streaming platforms.
+\item Future of collaborative filtering and problems it is facing today.
+\end{enumerate}
+
+By addressing these questions, my work serves the purpose of offering basic information on Collaborative Recommendation Systems, while also providing a deeper explanation of some algorithms and structures used in them. I would also like to discuss real-world applications and use cases as well as future directions of collaborative recommendation systems. Finally at the end of this article we will have a look at current challenges and efforts to improve the efficiency and accuracy of Collaborative Filtering Techniques.
+\clearpage
+\end{abstract}
+
+
+
+\section{Introduction}
+
+It is almost impossible to find a person who has never relied on a third party recommendations, either from newspapers, journals, social media, general surveys, or any other sources.  Which proves that people constantly rely on each others opinion. Having said that, Collaborative Recommendation Systems (CRS) use this natural human behavior to identify  users preferences and interests relying on collected recommendations. As a result CRS are highly effective in helping people with tasks like finding trending movies, gripping books, best food recipes, biggest music hits and best-matching products.\cite{10.1155/2009/421425}
+
+\hspace{0.2cm}
+
+That way, the key concept of CRS is leveraging user behavior to analyze patterns in their interactions with content and identify similarities between other users. By doing so, they are able to suggest new items to users with similar tastes. Because of that Collaborative Filtering(CF) is common approach to build recommendation systems as they have proven to be efficient in many applications.
+\cite{kumar2015role}
+
+\hspace{0.2cm}
+
+So by term "Collaborative recommendation systems" we understand  recommendation systems that compare if users X and Y  rate n amount of items similarly or have similar behaviours (e.g, buying, watching, listening)  and based of that suggest similar items to both users\cite{10.1155/2009/421425}. Therefore, it can be represented as a table, with U and I being users and items, respectively, and their intersection indicating how each user evaluates individual items.
+
+\hspace{0.5cm}
+
+\begin{center}
+\begin{tabular}{ |C{1cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}| }
+\hline
+  & I1 & I2 & I3 & I4 & I5  \\
+ \hline
+ U1 & 0.5 & 0.3 &  &  &  \\  
+ \hline
+ U2 &  &  & 0.45 &  & 0.4 \\
+ \hline
+ U3 & 0.5 & 0.7 &  & 0.4 & 0.9 \\
+ \hline
+ U4 & 0.6 & 0.9 &  & 0.3 & ? \\
+ \hline
+\end{tabular}
+\end{center}
+
+\hspace{0.5cm}
+
+From this example, the value of item I5 for U4 can be estimated using a similar user, U3; therefore, U4 would likely rate I5 highly as well. Using this principle CRS are able to produce high-quality predictions regarding users preferred content as it is based on other people with similar tastes. However, there is almost no information on U2 preferences, which presents one of the biggest challenges in collaborative filtering systems. Without corresponding users, such cases lead to a Cold Start problem, which I will address in Section\ref{sec:types_of_collaborative_filtering} \cite{5283866}.
+
+\hspace{0.5cm}
+
+But before we move any further into exploring CRS, I want to clarify the differences between CRS (Collaborative Recommendation Systems) and CF (Collaborative Filtering). CRS refer to systems that use one or multiple CF techniques to come up with precise predictions. While by term CF we understand specific technique such as: User-Based, Item-Based, Memory-Based and Model-Based CF techniques followed by and Hybrid Methods, which focus on finding patterns in user or item similarities to predict one's preferences. Having taken this into account a single CRS can use one or more CF techniques to generate accurate predictions, while CF by itself is closer to an algorithm than to a functional software.
+
+
+\section{Types of Collaborative filtering}
+
+There are several CF Techniques including: Memory-Based, Model-Based approaches as well as Hybrid Techniques. In this section of the article I will separately discuss each technique and make a concise conclusion on where can each technique be effective.
+
+\subsection{Memory-Based Collaborative Filtering}
+Memory-based CF algorithms use a user-item interaction matrix to make predictions. They do this by finding so-called "neighbors" — users or items that are similar based on previous interactions. Recommendations are then generated by analyzing these neighbors preferences and behaviors. There are two types of memory-based CF: User-Based and Item-Based:
+
+\subsubsection{User-Based Collaborative Filtering}
+User-based CF is one the most popular approaches to generating recommendations. This technique predicts user preferences by finding similar users based on their past interactions. The most primitive example would be if User A and User B have similar ratings for many movies, and User B has liked a movie that User A hasn't watched, algorithm is likely to consider that User A would probably enjoy that movie to. Unfortunately though, this algorithm struggles with scalability and generating recommendations for new users, as their profiles lack data. 
+\subsubsection{Item-Based Collaborative Filtering}
+Item-based CF were firstly introduced by Amazon in 1998 and is very similar to user-based, but instead it focuses on finding similarities between items, rather then users. That way item-based CF recommend items that are similar to those, user has previously interacted with. A great example would be if user liked Movie A which is highly similar to Movie B, then Movie B would be recommended to user. Moreover item-based CF is easier to scale than user-based CF and also performs better with lack of information. However it usually lacks personalization, as patterns in user behaviour are ignored. 
+\subsection{Model-Based Collaborative Filtering}
+\subsection{Hybrid Techniques in Collaborative Filtering} 
+
+\cite{10.1155/2009/421425}
+\cite{8506344}
+\label{sec:types_of_collaborative_filtering}
+
+%\acknowledgement{Ak niekomu chcete poďakovať\ldots}
+
+
+% týmto sa generuje zoznam literatúry z obsahu súboru literatura.bib podľa toho, na čo sa v článku odkazujete
+\bibliography{literatura}
+\bibliographystyle{plain} % prípadne alpha, abbrv alebo hociktorý iný
+\end{document}
