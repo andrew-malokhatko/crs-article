@@ -33,7 +33,7 @@ Collaborative Recommendation Systems have played an important role in various in
 \begin{enumerate}
 \item What are Collaborative Recommendation Systems are?
 \item Types of Collaborative Filtering: such as user-based, item-based, and hybrid methods.
-\item Underlying structures and core algorithms behind Collaborative Recommendation Systems, including matrix factorization and deep learning approaches.
+\item Problems Collaborative Filtering is facing today  
 \item Real-world use cases ranging from product recommendation in e-commerce to content suggestions on social media and streaming platforms.
 \item Future of collaborative filtering and problems it is facing today.
 \end{enumerate}
@@ -89,7 +89,7 @@ But before we move any further into exploring CRS, I want to clarify the differe
 
 
 \section{Types of Collaborative filtering}
-
+\label{sec:types_of_collaborative_filtering}
 There are several CF Techniques including: Memory-Based, Model-Based approaches as well as Hybrid Techniques. In this section of the article I will separately discuss each technique and make a concise conclusion on where can each technique be effective.
 
 \subsection{Memory-Based Collaborative Filtering}
@@ -111,18 +111,31 @@ Model-based CF techniques differ from memory-based methods by using machine lear
 \hspace{0.1cm}
 
 \subsubsection{Matrix Factorization}
+\label{sec:matrix-factorization}
 \textbf{Matrix Factorization (MF)} is one popular technique to speed up the computation and increase accuracy in Model-based CF. It reduces a high-dimensional user-item interaction matrix into lower-dimensional matrices representing users and items and then puts up new User-Item matrix, but this time with predicted ratings assigned to each cell. By doing so, MF reveals latent patterns, allowing it to predict missing values (e.g., an unrated movie). Finally this method not only improves the quality of recommendations but also helps in managing the sparsity of the data, which is often a challenge in real-world scenarios.
-\cite{matrixfactorization}
+\cite{matrixfactorization} \cite{koren2009matrix}
 
 \hspace{0.1cm}
 
-One commonly used MF method is known as Singular Value Decomposition (SVD), which has been widely implemented in recommendation systems. This was demonstrated by Koren in their work on the Netflix Prize, where SVD significantly improved prediction accuracy by leveraging patterns within sparse data. This example also perfectly illustrates the challenges opposed by sparse data in bigger corporations, where enormous number of items and users lead to incomplete interaction matrices. \cite{koren2009matrix}\cite{koren2009bellkor}.
+One commonly used MF method is known as Singular Value Decomposition (SVD), which has been widely implemented in recommendation systems. This was demonstrated by Koren in their work on the Netflix Prize, where SVD significantly improved prediction accuracy by leveraging patterns within sparse data. This example also perfectly illustrates the challenges opposed by sparse data in bigger corporations, where enormous number of items and users lead to incomplete interaction matrices. \cite{koren2009bellkor}\cite{baker2005singular}.
 
 \hspace{0.1cm}
+//
+Another widely used model-based technique is \textbf{Deep Learning}. Neural networks can be used to capture more complex, non-linear relationships between users and items. Recent advancements in deep learning models, such as autoencoders, neural collaborative filtering, and convolutional neural networks, have further expanded the capability of model-based CF to handle highly diverse user-item data, delivering personalized recommendations based on deep feature extraction from both user behavior and content \cite{he2017neural}.
+
+In conclusion, model-based CF techniques are highly effective for recommendation tasks requiring scalability, personalization, and adaptability, especially in systems with vast datasets and sparsity issues. However, they require a larger computational effort for training and tuning, making them more resource-intensive than traditional memory-based methods.
 
 \subsection{Hybrid Techniques in Collaborative Filtering} 
 
-\label{sec:types_of_collaborative_filtering}
+\section{Common Problems in Collaborative Filtering}
+As we know by now Collaborative Filtering (CF) is effective way to make recommendations, however it's not without challenges as data volume continues to rise CF encounters more and more issues including data sparsity, cold start problem, scalability and other. All this problems drastically affect efficiency, usability and fairness of Collaborative Recommendation Systems (CRS). 
+
+\subsection{Data Sparsity}
+Data Sparsity is one of the most common problems in CF. It's because many users interact with only small amount of items, which results in  sparse User-Item (UI) Matrices, making it difficult for CF algorithms to make accurate recommendations, therefore suggested content can be less accurate or even irrelevant. However this problem can be solved with techniques like Matrix-Factorization, which I have covered in section at paragraph \ref{sec:matrix-factorization}
+
+\subsection{Cold Start}
+Nowadays the most significant issue in the CF is the cold start problem. It occurs whenever new User or Item is added to UI Matrix. It's because most CF algorithms rely on patterns of user-behavior, so they are not able to accurately generate recommendations for Users or Items without existing ratings. This problem in particular impacts new Users or Items, who may recieve irrelevant recommendations at first. To solve this problem.....
+
 
 \bibliography{literatura}
 \bibliographystyle{plain}
